@@ -12,5 +12,4 @@ function parseData(arr: ReadonlyArray<string>): number {
   }, 0);
 }
 
-// tslint:disable-next-line:no-expression-statement
 console.log(parseData(data));
