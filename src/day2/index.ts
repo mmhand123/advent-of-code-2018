@@ -41,16 +41,61 @@ export function partOne(arr: string[]): number {
   return doubles * triples;
 }
 
+function partTwo(arr: string[]): string {
+  for (let i = 0; i < arr.length; i++) {
+    const str1 = arr[i];
+    for (let j = i + 1; j < arr.length; j++) {
+      const str2 = arr[j];
+      if (str1.length === str2.length) {
+        const distanceData = hammingDistance(zip(str1, str2));
+        if (distanceData.distance === 1) {
+          const [differingIndex] = distanceData.differingIndecies;
+
+          return `${str1.substr(0, differingIndex)}${str1.substr(
+            differingIndex + 1
+          )}`;
+        }
+      }
+    }
+  }
+  return '';
+}
+
+interface HammingData {
+  distance: number;
+  differingIndecies: number[];
+}
+
+function hammingDistance(zipped: string[][]): HammingData {
+  return zipped.reduce(
+    (data, tuple, i) => {
+      const [a, b] = tuple;
+      const distance = a === b ? 0 : 1;
+
+      data.distance += distance;
+
+      if (distance) {
+        data.differingIndecies.push(i);
+      }
+
+      return data;
+    },
+    { distance: 0, differingIndecies: [] }
+  );
+}
+
+function zip(str1: string, str2: string): string[][] {
+  return str1.split('').map((item1, i) => [item1, str2[i]]);
+}
+
 // const fakeValues = [
-//   'abcdef',
-//   'bababc',
-//   'abbcde',
-//   'abcccd',
-//   'aabcdd',
-//   'abcdee',
-//   'ababab'
+//   'abcde',
+//   'fghij',
+//   'klmno',
+//   'pqrst',
+//   'fguij',
+//   'axcye',
+//   'wvxyz'
 // ];
 
-// console.log(partOne(fakeValues));
-
-console.log(partOne(values));
+console.log(partTwo(values));
